@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Submit form javascript</title>
+	<style>
+	.sms-text{
+		font-size: 13px;
+		color: #000;
+		font-weight: bold;
+		text-align: right;
+		visibility: hidden;
+	}
+    </style>
+</head>
+<body>
+	Content of the document......
+	<form method="POST" id="myFormCars" onsubmit="return false;">
+		<div id="smstext" class="sms-text">Hello</div>
+		<div class="row">
+			<label for="name">Họ Tên</label>
+			<input required type="text" id="name" oninvalid="this.setCustomValidity('Vui lòng điền Họ và tên.')" oninput="setCustomValidity('')"><br>
+		</div>
+		<div class="row">
+			<label for="phone">Số điện thoại</label>
+			<input required type="text" id="phone" oninvalid="this.setCustomValidity('Vui lòng điền số điện thoại.')" oninput="setCustomValidity('')"><br>
+		</div>
+		<div class="row">
+			<label for="email">Email</label>
+			<input required type="email" id="email" oninvalid="this.setCustomValidity('Vui lòng điền địa chỉ Email.')" oninput="setCustomValidity('')"><br>
+		</div>
+		<div class="row">
+			<label for="city">Thành phố</label>
+			<select required id="city" name="city">
+				<option value="Hồ Chí Minh">Hồ Chí Minh</option>
+				<option value="Hà Nội">Hà Nội</option>
+				<option value="Bình Dương">Bình Dương</option>
+				<option value="Vũng Tàu">Vũng Tàu</option>
+				<option value="Hà Tĩnh">Hà Tĩnh</option>
+				<option value="Vinh">Vinh</option>
+				<option value="Khác">Khác</option>
+			</select>
+		</div>
+		<div class="row">
+			<label for="cars">Mẫu xe quan tâm</label>
+			<select required  name="car" id="cars">
+				<option value="Outback">Outback</option>
+				<option value="Forester">Forester</option>
+				<option value="xv">xv</option>
+			</select>
+		</div>
+		<input type="submit" id="submit">
+	</form>
+	<script>
+		document.getElementById("submit").addEventListener("click", function(event){
+			var nameObj = document.getElementById("name");
+			var phoneObj = document.getElementById("phone");
+			var emailObj = document.getElementById("email");
+			var cityObj = document.getElementById("city");
+			var carObj = document.getElementById("cars");
+			var validateform = true;
+			if (!nameObj.checkValidity()) {
+				document.getElementById("smstext").innerHTML = "Vui lòng nhập họ tên";
+				validateform = false;
+			}else if(!phoneObj.checkValidity()){
+				document.getElementById("smstext").innerHTML = "Vui lòng nhập số điện thoại";
+				validateform = false;
+			}else if(!emailObj.checkValidity()){
+				document.getElementById("smstext").innerHTML = "Vui lòng nhập địa chỉ email";
+				validateform = false;
+			}
+			if(validateform == true){
+				var data = new FormData();
+				data.append('name', nameObj.value);
+				data.append('phone', phoneObj.value);
+				data.append('email', emailObj.value);
+				data.append('city', cityObj.value);
+				data.append('car', carObj.value);
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', 'https://voolatech.com', true);
+				xhr.onload = function () {
+					// do something to response
+				};
+				xhr.send(data);
+				document.getElementById("smstext").innerHTML = "Chúc mừng bạn đã đăng ký thành công!";
+				document.getElementById("myFormCars").reset();
+			}
+			document.getElementById("smstext").style.visibility = "visible";
+		});
+	</script>
+
+</body>
+</html>
